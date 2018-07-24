@@ -21,7 +21,7 @@ import com.structurizr.view.ViewSet;
 public class App {
 	private static final String DATABASE_TAG = "Database";
 
-	public static void main(String[] args) throws Exception {
+	public static void main(String[] args) {
 		Workspace workspace = new Workspace("Structurizr for Java Annotations",
 				"This is a model of my software system.");
 		Model model = workspace.getModel();
@@ -37,7 +37,11 @@ public class App {
 
 		ComponentFinder componentFinder = new ComponentFinder(webApplication, "com.structurizr.example.annotations",
 				new StructurizrAnnotationsComponentFinderStrategy());
-		componentFinder.findComponents();
+		try {
+			componentFinder.findComponents();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		model.addImplicitRelationships();
 
 		ViewSet views = workspace.getViews();
@@ -60,13 +64,12 @@ public class App {
 		styles.addElementStyle(Tags.COMPONENT).background("#85bbf0").color("#000000");
 		styles.addElementStyle(Tags.PERSON).background("#08427b").shape(Shape.Person);
 		styles.addElementStyle(DATABASE_TAG).shape(Shape.Cylinder);
-		
+
 		StringWriter stringWriter = new StringWriter();
-    	DotWriter dotWriter = new DotWriter();
-    	dotWriter.write(workspace, stringWriter);
-    	
-    	
-    	System.out.println(stringWriter);
+		DotWriter dotWriter = new DotWriter();
+		dotWriter.write(workspace, stringWriter);
+
+		System.out.println(stringWriter);
 
 	}
 
